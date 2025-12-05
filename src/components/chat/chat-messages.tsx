@@ -1,7 +1,7 @@
 "use client";
 
 import type { UIMessage } from "ai";
-import { Bot, User } from "lucide-react";
+import { Bot } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import type { ModelResponse } from "@/types/chat";
@@ -14,6 +14,25 @@ type ExtendedMessage = UIMessage & {
 
 interface ChatMessagesProps {
   messages: ExtendedMessage[];
+}
+
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+// Helper component to render message content from parts or string
+function MessageContent({ message }: { message: ExtendedMessage }) {
+  if (message.parts) {
+    return (
+      <>
+        {message.parts.map((part, index) => {
+          if (part.type === "text") {
+            return <span key={`${message.id}-part-${index}`}>{part.text}</span>;
+          }
+          return null;
+        })}
+      </>
+    );
+  }
+  return <>{(message as any).content}</>;
 }
 
 export function ChatMessages({ messages }: ChatMessagesProps) {
@@ -30,81 +49,65 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
     );
   }
 
-  return (
-    <div className="space-y-6 pb-32">
-      {messages.map((message) => (
-        <div key={message.id}>
-          {message.role === "user" ? (
-            <div className="flex justify-center">
-              <Card className="mx-4 w-full max-w-2xl border-none bg-primary/5 p-4 shadow-sm">
-                <div className="flex gap-4">
-                  <Avatar className="h-10 w-10 border-2 border-background shadow-sm">
-                    <div className="flex h-full w-full items-center justify-center bg-primary text-primary-foreground">
-                      <User className="h-6 w-6" />
+  const renderMessageList = (modelName: string, isAnthropic = false) => (
+    <div className="flex h-full flex-col">
+      <div className="sticky top-0 z-10 flex items-center gap-2 border-b bg-background/95 p-4 backdrop-blur supports-backdrop-filter:bg-background/60">
+        <Avatar
+          className={`h-6 w-6 border ${isAnthropic ? "bg-orange-100" : "bg-green-100"}`}
+        >
+          <div
+            className={`flex h-full w-full items-center justify-center font-bold text-xs ${isAnthropic ? "text-orange-700" : "text-green-700"}`}
+          >
+            {isAnthropic ? "AN" : "OA"}
+          </div>
+        </Avatar>
+        <span className="font-semibold text-sm">{modelName}</span>
+      </div>
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-6 pb-4">
+          {messages.map((message) => (
+            <div key={`${modelName}-${message.id}`}>
+              {message.role === "user" ? (
+                <div className="flex justify-end">
+                  <Card className="max-w-[90%] bg-primary p-3 text-primary-foreground">
+                    <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                      <MessageContent message={message} />
                     </div>
-                  </Avatar>
-                  <div className="flex-1">
-                    <p className="mb-1 font-semibold text-primary">You</p>
-                    <p className="whitespace-pre-wrap text-sm leading-relaxed">
-                      {(message as any).content}
-                    </p>
+                  </Card>
+                </div>
+              ) : (
+                <div className="flex justify-start">
+                  <div className="max-w-[90%] space-y-2">
+                    {isAnthropic ? (
+                      <Card className="border-muted bg-muted/20 p-3">
+                        <p className="text-muted-foreground text-sm italic">
+                          Waiting for Anthropic response...
+                        </p>
+                      </Card>
+                    ) : (
+                      <Card className="border-muted p-3">
+                        <div className="whitespace-pre-wrap text-muted-foreground text-sm leading-relaxed">
+                          <MessageContent message={message} />
+                        </div>
+                      </Card>
+                    )}
                   </div>
                 </div>
-              </Card>
+              )}
             </div>
-          ) : (
-            <div className="mx-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-              {/* OpenAI Column */}
-              <Card className="border-muted p-4 shadow-sm">
-                <div className="mb-3 flex items-center gap-2 border-b pb-2">
-                  <Avatar className="h-8 w-8 border bg-green-100">
-                    <div className="flex h-full w-full items-center justify-center font-bold text-green-700 text-xs">
-                      OA
-                    </div>
-                  </Avatar>
-                  <span className="font-semibold text-sm">OpenAI (GPT-4o)</span>
-                </div>
-                <div className="whitespace-pre-wrap text-muted-foreground text-sm leading-relaxed">
-                  {/* Render parts if available (AI SDK 5.0), otherwise content */}
-                  {message.parts
-                    ? message.parts.map((part, index) => {
-                        if (part.type === "text") {
-                          return (
-                            <span key={`${message.id}-part-${index}`}>
-                              {part.text}
-                            </span>
-                          );
-                        }
-                        return null;
-                      })
-                    : (message as any).content}
-                </div>
-              </Card>
-
-              {/* Anthropic Column */}
-              <Card className="border-muted bg-muted/20 p-4 shadow-sm">
-                <div className="mb-3 flex items-center gap-2 border-b pb-2">
-                  <Avatar className="h-8 w-8 border bg-orange-100">
-                    <div className="flex h-full w-full items-center justify-center font-bold text-orange-700 text-xs">
-                      AN
-                    </div>
-                  </Avatar>
-                  <span className="font-semibold text-sm">
-                    Anthropic (Claude)
-                  </span>
-                </div>
-                <div className="whitespace-pre-wrap text-muted-foreground text-sm leading-relaxed">
-                  {/* Placeholder for Anthropic response */}
-                  <span className="italic opacity-70">
-                    Waiting for Anthropic response... (Multi-model streaming
-                    coming soon)
-                  </span>
-                </div>
-              </Card>
-            </div>
-          )}
+          ))}
         </div>
-      ))}
+      </ScrollArea>
+    </div>
+  );
+
+  return (
+    <div className="grid h-full grid-cols-1 divide-x md:grid-cols-2">
+      {/* OpenAI Column */}
+      {renderMessageList("OpenAI (GPT-4o)")}
+
+      {/* Anthropic Column */}
+      {renderMessageList("Anthropic (Claude)", true)}
     </div>
   );
 }

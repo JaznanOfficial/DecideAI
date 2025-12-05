@@ -7,7 +7,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ChatInput } from "@/components/chat/chat-input";
 import { ChatMessages } from "@/components/chat/chat-messages";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function MultiModelChat() {
   const { messages, sendMessage, status } = useChat({
@@ -25,7 +24,7 @@ export function MultiModelChat() {
   });
 
   const [input, setInput] = useState("");
-  const isLoading = status === "streaming" || status === "awaiting-message";
+  const isLoading = status === "submitted" || status === "streaming";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -54,9 +53,9 @@ export function MultiModelChat() {
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background">
-      <ScrollArea className="flex-1 p-4">
+      <div className="flex-1 overflow-hidden">
         <ChatMessages messages={messages as any} />
-      </ScrollArea>
+      </div>
       <div className="z-10 border-t bg-background/80 p-4 backdrop-blur-sm">
         <ChatInput
           isLoading={isLoading}
