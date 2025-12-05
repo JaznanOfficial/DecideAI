@@ -1,55 +1,49 @@
-'use client';
+"use client";
 
-import { useState, type FormEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Send, Loader2 } from 'lucide-react';
+import { Loader2, Send } from "lucide-react";
+import type { FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ChatInputProps {
-  onSubmit: (message: string) => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onSubmit: (e: FormEvent) => void;
   isLoading?: boolean;
   placeholder?: string;
 }
 
 export function ChatInput({
+  value,
+  onChange,
   onSubmit,
   isLoading = false,
-  placeholder = 'Ask anything about your business...',
+  placeholder = "Ask anything about your business...",
 }: ChatInputProps) {
-  const [input, setInput] = useState('');
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
-
-    onSubmit(input);
-    setInput('');
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e);
+      onSubmit(e);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="border-t bg-background p-4">
-      <div className="flex gap-2 items-end max-w-4xl mx-auto">
+    <form className="mx-auto max-w-4xl" onSubmit={onSubmit}>
+      <div className="flex items-end gap-2">
         <Textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          className="max-h-[200px] min-h-[60px] resize-none bg-background shadow-sm"
+          disabled={isLoading}
+          onChange={onChange}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          disabled={isLoading}
-          className="min-h-[60px] max-h-[200px] resize-none"
           rows={3}
+          value={value}
         />
         <Button
-          type="submit"
-          disabled={!input.trim() || isLoading}
+          className="h-[60px] w-[60px] shrink-0 shadow-sm"
+          disabled={!value?.trim() || isLoading}
           size="icon"
-          className="h-[60px] w-[60px] shrink-0"
+          type="submit"
         >
           {isLoading ? (
             <Loader2 className="h-5 w-5 animate-spin" />
@@ -58,7 +52,7 @@ export function ChatInput({
           )}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground text-center mt-2">
+      <p className="mt-2 text-center text-muted-foreground text-xs">
         Press Enter to send, Shift+Enter for new line
       </p>
     </form>
