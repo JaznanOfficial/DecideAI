@@ -60,17 +60,19 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { userId, title } = body;
+    const { id, userId, title } = body;
 
     if (!userId) {
       return Response.json({ error: 'User ID required' }, { status: 400 });
     }
 
+    const conversationId = id || nanoid(); // Use provided ID or generate new one
+
     // Return mock data if database is not configured
     if (!isDatabaseConfigured || !db) {
       console.warn('⚠️  Database not configured, returning mock conversation');
       const mockConvo = {
-        id: nanoid(),
+        id: conversationId,
         userId,
         title: title || 'New Chat',
         createdAt: new Date(),
@@ -82,7 +84,7 @@ export async function POST(req: Request) {
     const [conversation] = await db
       .insert(conversations)
       .values({
-        id: nanoid(),
+        id: conversationId,
         userId,
         title: title || 'New Chat',
       })

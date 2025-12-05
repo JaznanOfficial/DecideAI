@@ -52,7 +52,7 @@ export function useCreateConversation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { userId: string; title: string }) => {
+    mutationFn: async (data: { id?: string; userId: string; title: string }) => {
       const res = await fetch('/api/conversations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

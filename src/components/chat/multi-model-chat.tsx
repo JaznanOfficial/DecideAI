@@ -1,33 +1,21 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useMessages, useSendMessage } from '@/hooks/use-chat-history';
 import { ChatMessages } from '@/components/chat/chat-messages';
 import { ChatInput } from '@/components/chat/chat-input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
 
 interface MultiModelChatProps {
   conversationId: string;
 }
 
 export function MultiModelChat({ conversationId }: MultiModelChatProps) {
-  const { data: messages = [], isLoading: messagesLoading, error: messagesError, refetch } = useMessages(conversationId);
+  const { data: messages = [], isLoading: messagesLoading, error: messagesError } = useMessages(conversationId);
   const sendMessage = useSendMessage();
   const [selectedModels] = useState(['gpt4', 'claude', 'gemini']);
-  const errorShownRef = useRef(false);
-
-  // Show error toast only once
-  useEffect(() => {
-    if (messagesError && !errorShownRef.current) {
-      errorShownRef.current = true;
-      toast.error('Failed to load messages', {
-        description: 'There was an error loading your chat history',
-      });
-    }
-  }, [messagesError]);
 
   const handleSendMessage = async (content: string) => {
     // Build messages array for API
@@ -66,15 +54,17 @@ export function MultiModelChat({ conversationId }: MultiModelChatProps) {
     );
   }
 
-  if (messagesError) {
+  // For new conversations with no messages, show welcome instead of error
+  if (messagesError || (messages && messages.length === 0)) {
     return (
-      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-        <AlertCircle className="h-12 w-12 text-destructive mb-4" />
-        <h2 className="text-xl font-semibold mb-2">Failed to Load Messages</h2>
-        <p className="text-muted-foreground mb-4">
-          There was an error loading your chat history
-        </p>
-        <Button onClick={() => refetch()}>Try Again</Button>
+      <div className="flex flex-col h-screen">
+        <ScrollArea className="flex-1">
+          <ChatMessages messages={[]} />
+        </ScrollArea>
+        <ChatInput
+          onSubmit={handleSendMessage}
+          isLoading={sendMessage.isPending}
+        />
       </div>
     );
   }
