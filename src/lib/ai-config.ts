@@ -1,31 +1,36 @@
-import { openai } from '@ai-sdk/openai';
-import { anthropic } from '@ai-sdk/anthropic';
-import { google } from '@ai-sdk/google';
+import { createOpenAI } from '@ai-sdk/openai';
+import { createAnthropic } from '@ai-sdk/anthropic';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 
-// AI Gateway base URL - update with your gateway details
-// Format: https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}
-const gatewayBaseURL = process.env.AI_GATEWAY_BASE_URL;
+// AI Gateway API Key - Vercel handles the routing automatically
 const gatewayAPIKey = process.env.AI_GATEWAY_API_KEY;
 
 // Check if AI Gateway is configured
-export const isAIConfigured = !!(gatewayAPIKey && gatewayBaseURL);
+export const isAIConfigured = !!gatewayAPIKey;
 
 if (!isAIConfigured) {
-  console.warn('⚠️  AI Gateway not configured. Set AI_GATEWAY_API_KEY and AI_GATEWAY_BASE_URL in .env.local');
+  console.warn('⚠️  AI Gateway not configured. Set AI_GATEWAY_API_KEY in .env.local');
 }
 
-// Configure models with AI Gateway
-// When using AI Gateway, you only need one API key (AI_GATEWAY_API_KEY)
+// Configure providers with AI Gateway API key
+// Vercel AI Gateway handles the routing automatically
+const openai = createOpenAI({
+  apiKey: gatewayAPIKey,
+});
+
+const anthropic = createAnthropic({
+  apiKey: gatewayAPIKey,
+});
+
+const google = createGoogleGenerativeAI({
+  apiKey: gatewayAPIKey,
+});
+
+// Configure models
 export const models = {
-  gpt4: openai('gpt-4-turbo', {
-    baseURL: gatewayBaseURL,
-  }),
-  claude: anthropic('claude-3-5-sonnet-20241022', {
-    baseURL: gatewayBaseURL,
-  }),
-  gemini: google('gemini-2.0-flash-exp', {
-    baseURL: gatewayBaseURL,
-  }),
+  gpt4: openai('gpt-4-turbo'),
+  claude: anthropic('claude-3-5-sonnet-20241022'),
+  gemini: google('gemini-2.0-flash-exp'),
 };
 
 export type ModelKey = keyof typeof models;

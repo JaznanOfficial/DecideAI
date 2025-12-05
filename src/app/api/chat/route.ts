@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       return Response.json(
         { 
           error: 'AI Gateway not configured',
-          details: 'Please add AI_GATEWAY_API_KEY and AI_GATEWAY_BASE_URL to your .env.local file. See SETUP.md for instructions.'
+          details: 'Please add AI_GATEWAY_API_KEY to your .env.local file. Get it from https://vercel.com/ai-gateway'
         },
         { status: 503 }
       );
