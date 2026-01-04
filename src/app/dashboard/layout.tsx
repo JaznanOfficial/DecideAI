@@ -6,6 +6,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { DashboardBreadcrumb } from "@/components/dashboard-breadcrumb"
+import { ModeToggle } from "@/components/mode-toggle"
 
 export default function DashboardLayout({
   children,
@@ -24,6 +25,9 @@ export default function DashboardLayout({
               className="mr-2 data-[orientation=vertical]:h-4"
             />
             <DashboardBreadcrumb />
+          </div>
+          <div className="ml-auto px-4">
+             <ModeToggle />
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
