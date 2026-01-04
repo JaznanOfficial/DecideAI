@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import {
   BadgeDollarSign,
   BrainCircuit,
@@ -16,7 +17,11 @@ import {
   Users,
 } from "lucide-react"
 
+import { useSession } from "@/lib/auth-client"
+
 import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -29,11 +34,6 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Talent Acquisition",
@@ -303,6 +303,16 @@ const data = {
       title: "Support",
       url: "#",
       icon: LifeBuoy,
+      items: [
+          {
+              title: "Help Center",
+              url: "#",
+          },
+          {
+              title: "Contact Us",
+              url: "#",
+          }
+      ]
     },
     {
       title: "Feedback",
@@ -314,6 +324,13 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { data: session } = useSession();
+    const user = {
+        name: session?.user?.name || "User",
+        email: session?.user?.email || "user@example.com",
+        avatar: session?.user?.image || "",
+    }
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -335,9 +352,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        {/* <NavProjects projects={data.projects} /> */}
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )
