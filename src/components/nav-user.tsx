@@ -94,7 +94,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={async () => {
+            <DropdownMenuItem
+             className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+             onClick={async () => {
               await authClient.signOut({
                 fetchOptions: {
                   onSuccess: () => {
