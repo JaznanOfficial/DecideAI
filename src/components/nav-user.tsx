@@ -28,17 +28,25 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+import { NavUserSkeleton } from "@/components/skeletons/nav-user-skeleton"
+
 export function NavUser({
   user,
+  isLoading
 }: {
   user: {
     name: string
     email: string
     avatar: string
-  }
+  },
+  isLoading?: boolean
 }) {
   const { isMobile } = useSidebar()
   const router = useRouter()
+
+  if (isLoading) {
+    return <NavUserSkeleton />
+  }
 
   return (
     <SidebarMenu>
