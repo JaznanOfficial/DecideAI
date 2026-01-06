@@ -358,19 +358,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Master Agent" isActive={pathname === '/dashboard/master-agent'}>
-                <Link href="/dashboard/master-agent">
-                  <Bot />
-                  <span>Master Agent</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Dashboard" isActive={pathname === '/dashboard'}>
                 <Link href="/dashboard">
                   <LayoutDashboard />
                   <span>Dashboard</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Humio" isActive={pathname === '/dashboard/master-agent'}>
+                <Link href="/dashboard/master-agent">
+                  <Bot />
+                  <span>Humio AI</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
