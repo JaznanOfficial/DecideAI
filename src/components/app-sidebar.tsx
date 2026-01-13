@@ -37,10 +37,23 @@ const data = {
       title: "Human Resource (HR)",
       url: "/dashboard/operations/human-resource",
       icon: Users,
+      items: [
+        { title: "Overview", url: "/dashboard/operations/human-resource/overview" },
+        { title: "Onboarding", url: "/dashboard/operations/human-resource/onboarding" },
+        { title: "Employees", url: "/dashboard/operations/human-resource/employees" },
+        { title: "Roles & skills", url: "/dashboard/operations/human-resource/roles-skills" },
+        { title: "Teams", url: "/dashboard/operations/human-resource/teams" },
+        { title: "Availabilities & leaves", url: "/dashboard/operations/human-resource/availabilities-leaves" },
+        { title: "Employee health", url: "/dashboard/operations/human-resource/employee-health" },
+        { title: "Requests", url: "/dashboard/operations/human-resource/requests" },
+        { title: "Policies", url: "/dashboard/operations/human-resource/policies" },
+        { title: "Activities & decisions logs", url: "/dashboard/operations/human-resource/activities-decisions-logs" },
+        { title: "Settings & guardrails", url: "/dashboard/operations/human-resource/settings-guardrails" },
+      ],
     },
     {
-      title: "Project Manager (PM)",
-      url: "/dashboard/operations/project-manager",
+      title: "Project Management (PM)",
+      url: "/dashboard/operations/project-management",
       icon: Briefcase,
     },
   ],
@@ -119,14 +132,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <Link href="/dashboard/project">
                   <ClipboardList />
                   <span>Projects</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Teams" isActive={pathname === '/dashboard/teams'}>
-                <Link href="/dashboard/teams">
-                  <Briefcase />
-                  <span>Teams</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

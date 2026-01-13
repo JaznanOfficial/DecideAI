@@ -136,13 +136,32 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes collapsible-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    @apply border-border outline-ring/50;
-    @apply border-border outline-ring/50;
-    @apply border-border outline-ring/50;
-    @apply border-border outline-ring/50;
     @apply border-border outline-ring/50;
   }
   body {
