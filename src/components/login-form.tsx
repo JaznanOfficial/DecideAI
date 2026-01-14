@@ -58,7 +58,7 @@ export function LoginForm({
 			{
 				onSuccess: () => {
 					toast.success("Logged in successfully");
-					router.push("/dashboard");
+					router.push("/dashboard/humio-ai");
 					setIsLoading(false);
 				},
 				onError: (ctx) => {
@@ -130,7 +130,7 @@ export function LoginForm({
 								onClick={async () => {
 									await authClient.signIn.social({
 										provider: "google",
-										callbackURL: "/dashboard",
+										callbackURL: "/dashboard/humio-ai",
 									});
 								}}
 							>
