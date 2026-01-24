@@ -56,7 +56,7 @@ const data = {
       label: "Projects",
       items: [
         { title: "Overview", url: "/dashboard/operations/projects/overview", icon: LayoutGrid },
-        { title: "Active", url: "/dashboard/operations/projects/active", icon: Rocket },
+        { title: "Projects", url: "/dashboard/operations/projects/projects", icon: Rocket },
         { title: "Updates", url: "/dashboard/operations/projects/updates", icon: RefreshCcw },
         { title: "Risks", url: "/dashboard/operations/projects/risks", icon: ShieldAlert },
         { title: "Decisions", url: "/dashboard/operations/projects/decisions", icon: GitMerge },

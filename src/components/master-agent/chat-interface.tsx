@@ -1,12 +1,10 @@
 import * as React from "react"
-import { Send, Paperclip, Mic, Bot, User, Plus, FileText } from "lucide-react"
+import { Send, Paperclip, Mic, Bot, User, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { PreviewPanel } from "./preview-panel"
 
 interface Message {
   id: string
@@ -71,7 +69,7 @@ export function ChatInterface() {
   }
 
   return (
-    <div className="flex flex-col h-full bg-background rounded-lg border shadow-sm overflow-hidden relative"> {/* Added overflow-hidden and relative */}
+    <div className="flex flex-col h-full w-full bg-background rounded-lg border shadow-sm overflow-hidden relative">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur z-10 sticky top-0 h-16">
         {/* LEFT SIDE */}
@@ -112,33 +110,14 @@ export function ChatInterface() {
 
         {/* RIGHT SIDE */}
         <div className="flex items-center gap-2">
-             {/* MOBILE: New Session + Preview */}
-             <div className="flex items-center gap-2 xl:hidden">
-                <Button variant="outline" size="sm" className="gap-2 h-8 text-xs font-medium">
-                    <Plus className="h-3.5 w-3.5" />
-                    New Session
-                </Button>
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="ghost" size="sm" className="gap-2 h-8 text-xs font-medium text-muted-foreground hover:text-foreground">
-                            <FileText className="h-4 w-4" />
-                            Preview
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="right" className="p-0 w-[90%] sm:w-[540px]">
-                        <SheetHeader className="sr-only">
-                           <SheetTitle>Preview</SheetTitle>
-                        </SheetHeader>
-                        <PreviewPanel />
-                    </SheetContent>
-                </Sheet>
-             </div>
-
-             {/* DESKTOP: Online Status */}
-             <Button variant="ghost" size="sm" className="hidden xl:flex text-xs text-muted-foreground pointer-events-none px-3">
-                <span className="h-2 w-2 rounded-full bg-green-500 mr-2" />
-                Online
-             </Button>
+          <Button variant="outline" size="sm" className="gap-2 h-8 text-xs font-medium xl:hidden">
+            <Plus className="h-3.5 w-3.5" />
+            New Session
+          </Button>
+          <Button variant="ghost" size="sm" className="hidden xl:flex text-xs text-muted-foreground pointer-events-none px-3">
+            <span className="h-2 w-2 rounded-full bg-green-500 mr-2" />
+            Online
+          </Button>
         </div>
       </div>
 
