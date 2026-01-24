@@ -2,13 +2,23 @@
 
 import * as React from "react"
 import {
-  Briefcase,
-  Command,
-  LifeBuoy,
-  Send,
-  Users,
+  Archive,
+  BarChart3,
   Bot,
   Building2,
+  ClipboardList,
+  Command,
+  Gauge,
+  GitMerge,
+  KeyRound,
+  LayoutDashboard,
+  LayoutGrid,
+  LifeBuoy,
+  RefreshCcw,
+  Rocket,
+  ShieldAlert,
+  Send,
+  Users,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -30,40 +40,27 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  navMain: [
+  navGroups: [
     {
-      title: "Human Resource (HR)",
-      url: "/dashboard/operations/human-resource",
-      icon: Users,
+      label: "People",
       items: [
-        { title: "Overview", url: "/dashboard/operations/human-resource/overview" },
-        { title: "Onboarding", url: "/dashboard/operations/human-resource/onboarding" },
-        { title: "Employees", url: "/dashboard/operations/human-resource/employees" },
-        { title: "Roles & skills", url: "/dashboard/operations/human-resource/roles-skills" },
-        { title: "Teams", url: "/dashboard/operations/human-resource/teams" },
-        { title: "Availabilities & leaves", url: "/dashboard/operations/human-resource/availabilities-leaves" },
-        { title: "Employee health", url: "/dashboard/operations/human-resource/employee-health" },
-        { title: "Requests", url: "/dashboard/operations/human-resource/requests" },
-        { title: "Policies", url: "/dashboard/operations/human-resource/policies" },
-        { title: "Activities & decisions logs", url: "/dashboard/operations/human-resource/activities-decisions-logs" },
-        { title: "Settings & guardrails", url: "/dashboard/operations/human-resource/settings-guardrails" },
+        { title: "Overview", url: "/dashboard/operations/people/overview", icon: LayoutDashboard },
+        { title: "Onboard", url: "/dashboard/operations/people/onboard", icon: ClipboardList },
+        { title: "Team", url: "/dashboard/operations/people/team", icon: Users },
+        { title: "Workload", url: "/dashboard/operations/people/workload", icon: Gauge },
+        { title: "Performance", url: "/dashboard/operations/people/performance", icon: BarChart3 },
+        { title: "Access", url: "/dashboard/operations/people/access", icon: KeyRound },
       ],
     },
     {
-      title: "Project Management (PM)",
-      url: "/dashboard/operations/project-management",
-      icon: Briefcase,
+      label: "Projects",
       items: [
-        { title: "Overview", url: "/dashboard/operations/project-management/overview" },
-        { title: "Projects", url: "/dashboard/operations/project-management/projects" },
-        { title: "Planning", url: "/dashboard/operations/project-management/planning" },
-        { title: "Tasks", url: "/dashboard/operations/project-management/tasks" },
-        { title: "Assignments", url: "/dashboard/operations/project-management/assignments" },
-        { title: "Timeline", url: "/dashboard/operations/project-management/timeline" },
-        { title: "Blockers & risks", url: "/dashboard/operations/project-management/blockers-risks" },
-        { title: "Updates", url: "/dashboard/operations/project-management/updates" },
-        { title: "Decision", url: "/dashboard/operations/project-management/decision" },
-        { title: "Settings & guardrails", url: "/dashboard/operations/project-management/settings-guardrails" },
+        { title: "Overview", url: "/dashboard/operations/projects/overview", icon: LayoutGrid },
+        { title: "Active", url: "/dashboard/operations/projects/active", icon: Rocket },
+        { title: "Updates", url: "/dashboard/operations/projects/updates", icon: RefreshCcw },
+        { title: "Risks", url: "/dashboard/operations/projects/risks", icon: ShieldAlert },
+        { title: "Decisions", url: "/dashboard/operations/projects/decisions", icon: GitMerge },
+        { title: "Archive", url: "/dashboard/operations/projects/archive", icon: Archive },
       ],
     },
   ],
@@ -140,7 +137,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             
           </SidebarMenu>
         </SidebarGroup>
-        <NavMain items={data.navMain} />
+        {data.navGroups.map((group) => (
+          <NavMain key={group.label} label={group.label} items={group.items} />
+        ))}
         {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>

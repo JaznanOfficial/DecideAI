@@ -19,8 +19,8 @@ export default function DashboardLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="min-h-[calc(100vh-1rem)]">
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border border-border/60 border-b bg-background/80 px-4 backdrop-blur-md md:rounded-t-xl">
+          <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
@@ -28,7 +28,7 @@ export default function DashboardLayout({
             />
             <DashboardBreadcrumb />
           </div>
-          <div className="ml-auto px-4 flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2">
             <Button variant="ghost" size="icon" className="cursor-pointer">
               <Bell className="h-[1.2rem] w-[1.2rem]" />
               <span className="sr-only">Notifications</span>
@@ -36,7 +36,7 @@ export default function DashboardLayout({
              <ModeToggle />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex flex-1 flex-col gap-4 border border-t-0 border-border/60 p-4 pt-4 md:rounded-b-xl">
           {children}
         </div>
       </SidebarInset>

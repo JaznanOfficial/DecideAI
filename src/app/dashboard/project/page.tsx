@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
 export default function DashboardProjectsRedirect() {
-  redirect("/dashboard/operations/project-management/projects")
+  redirect("/dashboard/operations/projects/projects")
 }
